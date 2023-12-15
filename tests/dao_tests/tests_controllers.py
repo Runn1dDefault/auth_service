@@ -15,9 +15,9 @@ class UserControllerTests(unittest.TestCase):
         engine_test = create_engine(TEST_DB_URI)
         User.metadata.create_all(engine_test)
 
-        SessionTest = sessionmaker()
-        SessionTest.configure(binds={User: engine_test})
-        self.session_test = SessionTest()
+        session_test = sessionmaker()
+        session_test.configure(binds={User: engine_test})
+        self.session_test = session_test()
 
         self.user_controller = UserController(session=self.session_test)
 
@@ -95,17 +95,13 @@ class UserControllerTests(unittest.TestCase):
         self.session_test.commit()
 
         created_user = self.session_test.query(User).filter_by(email='test@example.com').first()
-        self.user_controller.update(
-            created_user,
-            {
-                'email': 'test2@example.com',
-                'password': 'test2_password',
-                'role': 'developer',
-                'full_name': "Developer Name",
-                'email_verified': False,
-                'is_active': False
-            }
-        )
+        created_user.email = 'test2@example.com'
+        created_user.role = "developer"
+        created_user.password = 'test2_password'
+        created_user.full_name = "Dev Name"
+        created_user.email_verified = False
+        created_user.is_active = False
+        self.user_controller.commit()
         updated_user = self.session_test.query(User).filter_by(email='test2@example.com').first()
 
         self.assertIsNotNone(updated_user)

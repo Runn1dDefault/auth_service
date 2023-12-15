@@ -27,7 +27,8 @@ def create_client(**client_data) -> str:
 def update_user_pwd(user_id, plain_pwd):
     with UserController() as Users:
         user = Users.get_by_id(user_id)
-        return Users.update(user, {"password": get_hashed_password(plain_pwd)})
+        user.password = get_hashed_password(plain_pwd)
+        return Users.commit()
 
 
 def collect_user_data(user):
@@ -45,11 +46,21 @@ def get_user_data(user_id) -> dict | None:
 
 
 def update_user_data(user_id, updates: dict[str, Any]) -> bool:
+    if not updates:
+        return False
+
+    if "password" in updates:
+        raise ValueError("updates cannot have a key password!")
+
     with UserController() as Users:
         user = Users.get_by_id(_id=user_id)
         if not user:
             raise falcon.HTTPNotFound()
-        return Users.update(user, updates)
+
+        for key, value in updates.items():
+            if hasattr(user, key):
+                setattr(user, key, value)
+        return Users.commit()
 
 
 def verify_token_by_email(email) -> str | None:

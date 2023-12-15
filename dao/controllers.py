@@ -66,15 +66,8 @@ class BaseController:
             self.session.rollback()
             return False
 
-    def update(self, _id, values: dict[str, Any]) -> bool:
+    def commit(self) -> bool:
         try:
-            values = {getattr(self.model, key): value for key, value in values.items()}
-            print(values)
-            self.session.execute(
-                update(self.model)
-                .where(self.model.id == _id)
-                .values(values)
-            )
             self.session.commit()
             return True
         except Exception as e:
