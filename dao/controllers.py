@@ -1,7 +1,7 @@
 from logging import getLogger
 from typing import Any, Iterable
 
-from sqlalchemy import delete, update, exists
+from sqlalchemy import delete, exists
 from sqlalchemy.orm import load_only
 
 from .connections import get_session_factory
