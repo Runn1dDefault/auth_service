@@ -1,0 +1,2 @@
+from api.middleware.authentication import AuthMiddleware
+from api.middleware.auth_verify import VerifyEmailAuthMiddleware
