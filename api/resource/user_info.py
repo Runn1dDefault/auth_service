@@ -2,7 +2,7 @@ import falcon
 
 from api.error_msgs import MISSING_FIELDS_FOR_UPDATE, TRY_ANOTHER_TIME
 from api.queries import get_user_data, update_user_data
-from api.utils.validators import EmailValidator
+from api.utils.validators import EmailValidator, check_required_fields
 
 
 class UserInfoResource:
@@ -26,7 +26,12 @@ class UserInfoResource:
         if not user_id:
             raise falcon.HTTPUnauthorized()
 
-        data = req.get_media()
+        data = req.media
+        not_found_required_fields = check_required_fields(data, ("password",))
+        if not_found_required_fields:
+            resp.status = falcon.HTTP_BAD_REQUEST
+            resp.media = not_found_required_fields
+            return
 
         collected_update_fields = {}
         email = data.get("email")
@@ -52,7 +57,7 @@ class UserInfoResource:
                 description=MISSING_FIELDS_FOR_UPDATE
             )
 
-        if not update_user_data(user_id, collected_update_fields):
+        if not update_user_data(user_id, data["password"], collected_update_fields):
             raise falcon.HTTPInternalServerError(description=TRY_ANOTHER_TIME)
 
         resp.status = falcon.HTTP_OK

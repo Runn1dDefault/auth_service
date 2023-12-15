@@ -3,8 +3,8 @@ from typing import Any
 import falcon
 
 from api.enums import Role
-from api.error_msgs import TRY_ANOTHER_TIME
-from api.utils.hashers import get_hashed_password
+from api.error_msgs import TRY_ANOTHER_TIME, INVALID_CREDENTIALS
+from api.utils.hashers import get_hashed_password, verify_password
 from api.utils.tokens import auth_token_for_user, verify_token_for_user
 from dao.controllers import UserController
 
@@ -45,7 +45,7 @@ def get_user_data(user_id) -> dict | None:
             return collect_user_data(user)
 
 
-def update_user_data(user_id, updates: dict[str, Any]) -> bool:
+def update_user_data(user_id, password: str, updates: dict[str, Any]) -> bool:
     if not updates:
         return False
 
@@ -56,6 +56,9 @@ def update_user_data(user_id, updates: dict[str, Any]) -> bool:
         user = Users.get_by_id(_id=user_id)
         if not user:
             raise falcon.HTTPNotFound()
+
+        if not verify_password(plain_password=password, hashed_password=user.password):
+            raise falcon.HTTPUnauthorized(description=INVALID_CREDENTIALS)
 
         for key, value in updates.items():
             if hasattr(user, key):
