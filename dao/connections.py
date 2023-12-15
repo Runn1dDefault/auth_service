@@ -23,8 +23,7 @@ def get_session_factory():
     return Session
 
 
-def initialize_models():
-    User.metadata.create_all(engine)
+
 
 
 @contextmanager
