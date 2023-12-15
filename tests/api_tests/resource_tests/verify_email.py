@@ -1,7 +1,9 @@
+import re
 import unittest
 from falcon import testing, status_codes
 
 import api
+from api.error_msgs import EMAIL_TTL_ERROR
 from api.utils import verification_cache_key
 from api.utils.hashers import get_hashed_password
 from api.utils.tokens import auth_token_for_user, verify_token_for_user
@@ -48,6 +50,30 @@ class VerifyEmailResourceTest(unittest.TestCase):
         self.assertEqual(status_codes.HTTP_OK, response.status, getattr(response, 'json', ''))
         self.assertIn("user_email_verified", response.cookies)
         self.assertEqual("1", response.cookies.get("user_email_verified").value)
+
+    def test_failure_ttl(self):
+        test_user = User(
+            email="failure_ttl_user@gmail.com",
+            password=get_hashed_password("test_password"),
+            role="user",
+            full_name="Test User",
+            email_verified=False
+        )
+        created = self.user_controller.create(test_user)
+        self.assertTrue(created)
+
+        cache_key = verification_cache_key(test_user.email)
+        with redis_scope(0) as cache:
+            cache.setex(cache_key, 5, "1")
+
+        response = self.api.simulate_get(
+            f'/verify/{test_user.email}',
+            json={'password': 'test_password'},
+        )
+        self.assertEqual(status_codes.HTTP_400, response.status)
+
+        exc_data = getattr(response, 'json')
+        self.assertTrue(re.match(EMAIL_TTL_ERROR % r'\d+', exc_data['description']))
 
     def test_failed_send_verification_code(self):
         response = self.api.simulate_get('/verify/nonexistent@example.com')
