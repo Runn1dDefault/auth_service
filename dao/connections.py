@@ -23,9 +23,6 @@ def get_session_factory():
     return Session
 
 
-
-
-
 @contextmanager
 def redis_scope(db: int = 0):
     assert db < 16
