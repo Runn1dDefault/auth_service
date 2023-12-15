@@ -6,9 +6,9 @@ import api
 from api.utils.hashers import get_hashed_password
 from api.utils.tokens import encode_token, decode_token
 from config import TOKEN_AUTH_HEADER
-from dao.connections import initialize_models
 from dao.controllers import UserController
 from dao.models import User
+from dao.operations import initialize_models
 
 
 class AuthTest(unittest.TestCase):

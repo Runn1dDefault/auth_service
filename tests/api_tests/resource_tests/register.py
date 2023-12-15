@@ -3,8 +3,8 @@ import falcon
 from falcon import testing
 
 import api
-from dao.connections import initialize_models
 from dao.controllers import UserController
+from dao.operations import initialize_models
 
 
 class RegisterTest(unittest.TestCase):

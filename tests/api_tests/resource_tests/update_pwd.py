@@ -5,9 +5,9 @@ import api
 from api.utils.hashers import get_hashed_password
 from api.utils.tokens import auth_token_for_user, verify_token_for_user
 from config import TOKEN_AUTH_HEADER
-from dao.connections import initialize_models
 from dao.controllers import UserController
 from dao.models import User
+from dao.operations import initialize_models
 
 
 class UpdatePasswordResourceTest(unittest.TestCase):

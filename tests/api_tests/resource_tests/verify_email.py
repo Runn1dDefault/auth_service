@@ -8,9 +8,10 @@ from api.utils import verification_cache_key
 from api.utils.hashers import get_hashed_password
 from api.utils.tokens import auth_token_for_user, verify_token_for_user
 from config import TOKEN_AUTH_HEADER
-from dao.connections import initialize_models, redis_scope
+from dao.connections import redis_scope
 from dao.controllers import UserController
 from dao.models import User
+from dao.operations import initialize_models
 
 
 class VerifyEmailResourceTest(unittest.TestCase):
