@@ -31,7 +31,7 @@ class VerifyEmailResource(BaseVerifyResource):
         not_found_fields = check_required_fields(data, ('password',))
         if not_found_fields:
             resp.status = falcon.HTTP_BAD_REQUEST
-            resp.context.result = not_found_fields
+            resp.media = not_found_fields
             return
 
         with UserController() as Users:

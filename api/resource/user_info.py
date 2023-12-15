@@ -56,4 +56,4 @@ class UserInfoResource:
             raise falcon.HTTPInternalServerError(description=TRY_ANOTHER_TIME)
 
         resp.status = falcon.HTTP_OK
-        resp.context.result = get_user_data(user_id)
+        resp.media = get_user_data(user_id)

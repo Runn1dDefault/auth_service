@@ -19,14 +19,14 @@ class UpdatePasswordResource:
         not_found_fields = check_required_fields(data, ('password',))
         if not_found_fields:
             resp.status = falcon.HTTP_BAD_REQUEST
-            resp.context.result = not_found_fields
+            resp.media = not_found_fields
             return
 
         password = data['password']
         error_messages = PasswordValidator(password).validate()
         if error_messages:
             resp.status = falcon.HTTP_BAD_REQUEST
-            resp.context.result = {'password': error_messages}
+            resp.media = {'password': error_messages}
             return
 
         pwd_updated = update_user_pwd(user_id, password)
