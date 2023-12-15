@@ -63,7 +63,7 @@ class PasswordValidatorTest(unittest.TestCase):
 
         error_messages = validator.validate()
         self.assertIsInstance(error_messages, list)
-        self.assertIn(PWD_ERROR_MSGS["has_no_special_char"], error_messages)
+        self.assertIn(PWD_ERROR_MSGS["has_no_special_char"] % validator.SPECIAL_CHAR, error_messages)
 
 
 class EmailValidationTest(unittest.TestCase):
@@ -88,6 +88,26 @@ class EmailValidationTest(unittest.TestCase):
         for email in invalid_emails:
             validator = EmailValidator(email=email)
             self.assertFalse(validator.is_email_string)
+
+    def test_success_supported_domains(self):
+        validator = EmailValidator(email="valid_email@gmail.com")
+        self.assertTrue(validator.has_supported_domain)
+
+        validator = EmailValidator(email="valid_email@mail.ru")
+        self.assertTrue(validator.has_supported_domain)
+
+    def test_failure_supported_domains(self):
+        validator = EmailValidator(email="valid_email@gmail.co")
+        self.assertFalse(validator.has_supported_domain)
+
+        validator = EmailValidator(email="valid_email@mail.")
+        self.assertFalse(validator.has_supported_domain)
+
+        validator = EmailValidator(email="valid_email@example.com")
+        self.assertFalse(validator.has_supported_domain)
+
+        validator = EmailValidator(email="valid_email@test.com")
+        self.assertFalse(validator.has_supported_domain)
 
 
 class CheckRequiredFieldsTest(unittest.TestCase):
