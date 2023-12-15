@@ -11,7 +11,7 @@ from dao.models import User
 from dao.operations import initialize_models
 
 
-class AuthTest(unittest.TestCase):
+class TestAuth(unittest.TestCase):
     def setUp(self):
         initialize_models()
         self.user_controller = UserController()
@@ -25,7 +25,7 @@ class AuthTest(unittest.TestCase):
 
     def test_successful_authentication(self):
         test_user = User(
-            email="success_auth_user@gmail.com",
+            email="auth_success_user@gmail.com",
             password=get_hashed_password("test_password"),
             role="user",
             full_name="Test User"
@@ -49,7 +49,7 @@ class AuthTest(unittest.TestCase):
 
     def test_failed_authentication(self):
         test_user = User(
-            email="failed_auth_user@gmail.com",
+            email="auth_failed_user@gmail.com",
             password=get_hashed_password("test_password"),
             role="user",
             full_name="Test User"
@@ -63,7 +63,7 @@ class AuthTest(unittest.TestCase):
 
     def test_successful_access_with_token(self):
         test_user = User(
-            email="successful_access_with_token_user@gmail.com",
+            email="auth_successful_access_with_token_user@gmail.com",
             password=get_hashed_password("test_password"),
             role="user",
             full_name="Test User"

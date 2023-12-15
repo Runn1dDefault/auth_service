@@ -7,7 +7,7 @@ from dao.controllers import UserController
 from dao.operations import initialize_models
 
 
-class RegisterTest(unittest.TestCase):
+class TestRegister(unittest.TestCase):
     def setUp(self):
         initialize_models()
         self.user_controller = UserController()
@@ -21,7 +21,7 @@ class RegisterTest(unittest.TestCase):
     def test_successful_register(self):
         response = self.api.simulate_post(
             '/register',
-            json={'email': 'user@gmail.com', 'password': 'somePassword123f}', 'full_name': 'New User'}
+            json={'email': 'register_success_user@gmail.com', 'password': 'somePassword123f}', 'full_name': 'New User'}
         )
 
         self.assertEqual(falcon.HTTP_OK, response.status, getattr(response, 'text', None))
@@ -41,14 +41,14 @@ class RegisterTest(unittest.TestCase):
         self.assertIn('full_name', data)
 
     def test_failed_register_with_wrong_email(self):
-        payload_1 = {'email': 'testuser@example.com', 'password': 'somePassword123f}', 'full_name': 'New User'}
+        payload_1 = {'email': 'register_failed_user@example.com', 'password': 'somePassword123f}', 'full_name': 'New User'}
         response_1 = self.api.simulate_post('/register', json=payload_1)
         response_data = getattr(response_1, 'json')
 
         self.assertEqual(falcon.HTTP_BAD_REQUEST, response_1.status)
         self.assertIn('email', response_data)
 
-        payload_2 = {'email': 'testuser@d', 'password': 'somePassword123f}', 'full_name': 'New User'}
+        payload_2 = {'email': 'register_failed_user2@d', 'password': 'somePassword123f}', 'full_name': 'New User'}
         response_2 = self.api.simulate_post('/register', json=payload_2)
 
         self.assertEqual(falcon.HTTP_BAD_REQUEST, response_2.status)

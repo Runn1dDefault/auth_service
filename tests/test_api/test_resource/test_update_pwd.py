@@ -10,7 +10,7 @@ from dao.models import User
 from dao.operations import initialize_models
 
 
-class UpdatePasswordResourceTest(unittest.TestCase):
+class TestUpdatePassword(unittest.TestCase):
     def setUp(self):
         initialize_models()
         self.user_controller = UserController()
@@ -24,7 +24,7 @@ class UpdatePasswordResourceTest(unittest.TestCase):
 
     def test_success_update_password(self):
         test_user = User(
-            email="success_verify_user@gmail.com",
+            email="update_pwd_success_verify_user@gmail.com",
             password=get_hashed_password("test_password"),
             role="user",
             full_name="Test User",
@@ -50,7 +50,7 @@ class UpdatePasswordResourceTest(unittest.TestCase):
 
     def test_update_password_invalid_token(self):
         test_user = User(
-            email="invalid_token_user@gmail.com",
+            email="update_pwd_invalid_token_user@gmail.com",
             password=get_hashed_password("test_password"),
             role="user",
             full_name="Test User",
@@ -68,7 +68,7 @@ class UpdatePasswordResourceTest(unittest.TestCase):
 
     def test_password_validate_errors(self):
         test_user = User(
-            email="invalid_pwd_user@gmail.com",
+            email="update_pwd_invalid_pwd_user@gmail.com",
             password=get_hashed_password("test_password"),
             role="user",
             full_name="Test User",
@@ -90,7 +90,7 @@ class UpdatePasswordResourceTest(unittest.TestCase):
 
     def test_failure_invalid_verify_token(self):
         test_user = User(
-            email="failure_invalid_verify_token_user@gmail.com",
+            email="update_pwd_failure_invalid_verify_token_user@gmail.com",
             password=get_hashed_password("test_password"),
             role="user",
             full_name="Test User",
@@ -109,7 +109,7 @@ class UpdatePasswordResourceTest(unittest.TestCase):
 
     def test_failure_with_auth_token(self):
         test_user = User(
-            email="failure_with_auth_token_user@gmail.com",
+            email="update_pwd_failure_with_auth_token_user@gmail.com",
             password=get_hashed_password("test_password"),
             role="user",
             full_name="Test User",
@@ -129,7 +129,7 @@ class UpdatePasswordResourceTest(unittest.TestCase):
 
     def test_failure_with_auth_token_in_auth_header(self):
         test_user = User(
-            email="failure_with_auth_token_in_auth_header_user@gmail.com",
+            email="update_pwd_failure_with_auth_token_in_auth_header_user@gmail.com",
             password=get_hashed_password("test_password"),
             role="user",
             full_name="Test User",

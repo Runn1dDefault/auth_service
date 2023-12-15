@@ -12,7 +12,7 @@ from dao.models import User
 from dao.operations import initialize_models
 
 
-class ForgotPasswordResourceTest(unittest.TestCase):
+class TestForgotPassword(unittest.TestCase):
     def setUp(self):
         initialize_models()
         self.user_controller = UserController()
@@ -25,7 +25,7 @@ class ForgotPasswordResourceTest(unittest.TestCase):
 
     def test_failure_ttl(self):
         test_user = User(
-            email="failure_ttl_user@gmail.com",
+            email="forgot_pwd_failure_ttl_user@gmail.com",
             password=get_hashed_password("test_password"),
             role="user",
             full_name="Test User",

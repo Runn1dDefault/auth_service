@@ -4,7 +4,7 @@ from api.error_msgs import PWD_ERROR_MSGS, REQUIRED_FIELD_MISSING
 from api.utils.validators import PasswordValidator, EmailValidator, check_required_fields
 
 
-class PasswordValidatorTest(unittest.TestCase):
+class TestPasswordValidator(unittest.TestCase):
     def test_valid_password(self):
         password = "ValidP@ssw0rd"
         validator = PasswordValidator(password)
@@ -66,7 +66,7 @@ class PasswordValidatorTest(unittest.TestCase):
         self.assertIn(PWD_ERROR_MSGS["has_no_special_char"] % validator.SPECIAL_CHAR, error_messages)
 
 
-class EmailValidationTest(unittest.TestCase):
+class TestEmailValidation(unittest.TestCase):
     def test_valid_emails(self):
         valid_emails = [
             "user@gmail.com",
@@ -110,7 +110,7 @@ class EmailValidationTest(unittest.TestCase):
         self.assertFalse(validator.has_supported_domain)
 
 
-class CheckRequiredFieldsTest(unittest.TestCase):
+class TestCheckRequiredFields(unittest.TestCase):
     def test_not_found_fields(self):
         result = check_required_fields({}, ("some_required_field",))
         self.assertIsInstance(result, dict)

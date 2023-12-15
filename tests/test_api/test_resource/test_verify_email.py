@@ -14,7 +14,7 @@ from dao.models import User
 from dao.operations import initialize_models
 
 
-class VerifyEmailResourceTest(unittest.TestCase):
+class TestVerifyEmail(unittest.TestCase):
     def setUp(self):
         initialize_models()
         self.user_controller = UserController()
@@ -27,7 +27,7 @@ class VerifyEmailResourceTest(unittest.TestCase):
 
     def test_success_verifying(self):
         test_user = User(
-            email="success_verify_user@gmail.com",
+            email="verify_success_verify_user@gmail.com",
             password=get_hashed_password("test_password"),
             role="user",
             full_name="Test User",
@@ -54,7 +54,7 @@ class VerifyEmailResourceTest(unittest.TestCase):
 
     def test_failure_ttl(self):
         test_user = User(
-            email="failure_ttl_user@gmail.com",
+            email="verify_failure_ttl_user@gmail.com",
             password=get_hashed_password("test_password"),
             role="user",
             full_name="Test User",
@@ -82,7 +82,7 @@ class VerifyEmailResourceTest(unittest.TestCase):
 
     def test_failure_invalid_verify_token(self):
         test_user = User(
-            email="failure_invalid_verify_token_user@gmail.com",
+            email="verify_failure_invalid_verify_token_user@gmail.com",
             password=get_hashed_password("test_password"),
             role="user",
             full_name="Test User",
@@ -101,7 +101,7 @@ class VerifyEmailResourceTest(unittest.TestCase):
 
     def test_failure_with_auth_token(self):
         test_user = User(
-            email="failure_with_auth_token_user@gmail.com",
+            email="verify_failure_with_auth_token_user@gmail.com",
             password=get_hashed_password("test_password"),
             role="user",
             full_name="Test User",
@@ -121,7 +121,7 @@ class VerifyEmailResourceTest(unittest.TestCase):
 
     def test_failure_with_auth_token_in_auth_header(self):
         test_user = User(
-            email="failure_with_auth_token_in_auth_header_user@gmail.com",
+            email="verify_failure_with_auth_token_in_auth_header_user@gmail.com",
             password=get_hashed_password("test_password"),
             role="user",
             full_name="Test User",

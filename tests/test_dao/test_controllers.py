@@ -10,7 +10,7 @@ from dao.models import User
 TEST_DB_URI = 'sqlite:///:memory:'
 
 
-class UserControllerTests(unittest.TestCase):
+class TestUserController(unittest.TestCase):
     def setUp(self):
         engine_test = create_engine(TEST_DB_URI)
         User.metadata.create_all(engine_test)
@@ -26,7 +26,7 @@ class UserControllerTests(unittest.TestCase):
 
     def test_create_user(self):
         user_data = {
-            'email': 'test@example.com',
+            'email': 'controller_test_user@example.com',
             'password': 'test_password',
             'role': 'user',
             'full_name': "User Name",
@@ -36,9 +36,9 @@ class UserControllerTests(unittest.TestCase):
         }
         user = User(**user_data)
         self.user_controller.create(user)
-        created_user = self.session_test.query(User).filter_by(email='test@example.com').first()
+        created_user = self.session_test.query(User).filter_by(email='controller_test_user@example.com').first()
         self.assertIsNotNone(created_user)
-        self.assertEqual(created_user.email, 'test@example.com')
+        self.assertEqual(created_user.email, 'controller_test_user@example.com')
 
     def test_get_all_users(self):
         users = self.user_controller.get_all()
@@ -46,7 +46,7 @@ class UserControllerTests(unittest.TestCase):
 
     def test_get_user_by_id(self):
         user_data = {
-            'email': 'test@example.com',
+            'email': 'controller_test_id_user@example.com',
             'password': 'test_password',
             'role': 'user',
             'full_name': "User Name",
@@ -64,7 +64,7 @@ class UserControllerTests(unittest.TestCase):
 
     def test_user_by_email(self):
         user_data = {
-            'email': 'test@example.com',
+            'email': 'controller_test_email_user@example.com',
             'password': 'test_password',
             'role': 'user',
             'full_name': "User Name",
@@ -82,7 +82,7 @@ class UserControllerTests(unittest.TestCase):
 
     def test_update_user(self):
         user_data = {
-            'email': 'test@example.com',
+            'email': 'contoller_update_user@example.com',
             'password': 'test_password',
             'role': 'user',
             'full_name': "User Name",
@@ -94,15 +94,15 @@ class UserControllerTests(unittest.TestCase):
         self.session_test.add(user)
         self.session_test.commit()
 
-        created_user = self.session_test.query(User).filter_by(email='test@example.com').first()
-        created_user.email = 'test2@example.com'
+        created_user = self.session_test.query(User).filter_by(email='contoller_update_user@example.com').first()
+        created_user.email = 'contoller_update_user2@example.com'
         created_user.role = "developer"
         created_user.password = 'test2_password'
         created_user.full_name = "Dev Name"
         created_user.email_verified = False
         created_user.is_active = False
         self.user_controller.commit()
-        updated_user = self.session_test.query(User).filter_by(email='test2@example.com').first()
+        updated_user = self.session_test.query(User).filter_by(email='contoller_update_user2@example.com').first()
 
         self.assertIsNotNone(updated_user)
         self.assertEqual(updated_user.password, 'test2_password')
@@ -112,7 +112,7 @@ class UserControllerTests(unittest.TestCase):
 
     def test_email_exists(self):
         user_data = {
-            'email': 'test@example.com',
+            'email': 'contoller_email_exists_user@example.com',
             'password': 'test_password',
             'role': 'user',
             'full_name': "User Name",
@@ -124,7 +124,7 @@ class UserControllerTests(unittest.TestCase):
         self.session_test.add(user)
         self.session_test.commit()
 
-        result = self.user_controller.email_exists("test@example.com")
+        result = self.user_controller.email_exists("contoller_email_exists_user@example.com")
         self.assertIsInstance(result, bool)
         self.assertTrue(result)
         self.assertFalse(self.user_controller.email_exists("some_not_exists@gmail.com"))
