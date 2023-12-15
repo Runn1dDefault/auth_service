@@ -75,7 +75,7 @@ class VerifyEmailResourceTest(unittest.TestCase):
         exc_data = getattr(response, 'json')
         self.assertTrue(re.match(EMAIL_TTL_ERROR % r'\d+', exc_data['description']))
 
-    def test_failed_send_verification_code(self):
+    def test_failed_on_not_exists_email(self):
         response = self.api.simulate_get('/verify/nonexistent@example.com')
         self.assertEqual(status_codes.HTTP_NOT_FOUND, response.status, getattr(response, 'json', None))
 
