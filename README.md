@@ -30,12 +30,12 @@ pip install -r requirements.txt
 > :warning: **in order for the tests to work correctly, redefine USE_TEST to True in the .env file**
 > also after the tests have been checked you will need to return to the False state
 ```bash
-python -m tests
+python3 -m tests
 ```
 
 **Run falcon app**:
 ```bash
-python -m api
+python3 -m api
 ```
 ---
 
